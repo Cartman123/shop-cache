@@ -2,12 +2,14 @@ language: python
 sudo: false
 python:
 - '3.5'
+
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - g++-6
+
 install:
 - pip install -r requirements.txt
 - wget -q https://github.com/Cruel/3dstex/releases/download/1.1/3dstex-linux-x64
@@ -18,17 +20,20 @@ install:
 - chmod +x 3dstex-linux-x64
 - mkdir -p cache
 - tar -xaf cache.tar.gz -C cache
+
 script:
-- "./gen_cache.py -i cache"
-- "./3dstex-linux-x64 -bro etc1 images/*.png"
+- ./gen_cache.py -i cache
+- ./3dstex-linux-x64 -bro etc1 images/*.png
+
 before_deploy:
 - export RELEASE_FILENAME=cache-$TRAVIS_TAG
 - tar -czf $RELEASE_FILENAME-jpg.tar.gz data.json images/*.jpg
 - tar -czf $RELEASE_FILENAME-png.tar.gz data.json images/*.png
 - tar -czf $RELEASE_FILENAME-etc1.tar.gz data.json images/*.bin
+
 branches:
   only:
-  - "/^r.*/"
+  - /^r.*/
 
 deploy:
   provider: releases
