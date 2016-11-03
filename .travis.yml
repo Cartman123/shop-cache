@@ -33,7 +33,7 @@ before_deploy:
 
 branches:
   only:
-  - /^r.*/
+    - /^r.*/
 
 deploy:
   provider: releases
